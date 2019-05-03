@@ -1,0 +1,138 @@
+Exercises
+Create a new repository on GitHub to hold your assignments for the Databases module.
+Create a new branch for Checkpoint 1. Submit your answers.
+
+1. What data types do each of these values represent?
+
+    1. "A Clockwork Orange" - string
+    2. 42 - integer (numeric)
+    3. 09/02/1945 - date (data and time)
+    4. 98.7 - float (numeric)
+    5. $15.99 - money or smallmoney (numeric)
+
+
+2. Explain when a database would be used. Explain when a text file would be used.
+
+A database allows users to manage data through an interface.  If you are dealing with data,
+especially large amounts of data, and will need to access, add, delete, edit, and integrate
+the data with other applications, a database is the way to go.  It will more effectively and
+efficiently manage one's data.  A text file may be more useful if you are dealing with a small
+amount of data that will just be looked at as a reference.
+
+
+3. Describe one difference between SQL and other programming languages.
+
+One main difference between SQL and many other languages is that SQL is a declarative language,
+instead of a procedural language (JSX in React is also a declarative language). A declarative
+language is concerned with WHAT the user wants to find/do rather than HOW the database will find it.
+We don't define the search algorithm for the database, rather, we simply tell the database what we
+are looking for.  The database engine will determine the best way of HOW to find it.
+
+
+
+4. In your own words, explain how the pieces of a database system fit together at a high level.
+
+A database system organizes data in a systematic way.  A database allows information (values) about
+groups (tables) of items (rows) to be organized according to topics of information (columns).  Databases
+allow you to view, add, delete, and edit data.
+
+
+5. Explain the meaning of table, row, column, and value.
+
+    Table: A table contains data to a particular grouping of items or people.  For example, I am
+    a teacher who is currently entering grades for students.  I am able to look at the students' grades
+    for the 4th quarter in a spreadsheet by class.  I look at the table for Period 1 to see all
+    the grades of each student.
+
+    Row: Each row represents a single item with information pertaining to it.  In my example with the
+    students, each row containing data for an individual student.  Also in the row of that student is
+    information such as their student id #, and grades for every assignment.
+
+    Column: Columns indicate what kind of data will be stored there.  For example, in the students
+    grades example, while each row would contain information about a student.  Each column would
+    indicate what kind of information would be present in that column.  You would have a column for
+    "student name", "student id", "total grade", "homework 1", "homework 2", "homework 3", "quiz 1",
+    "quiz 2", "quiz 3", "test 1"
+
+    Value: At the intersection of each row and column in a table is a cell.  Each cell in a table
+    contains a value.  The value is a piece of information the column name describes about what is in
+    that particular row.  Using the previous example from above: 91 could be a value that appears
+    under the "test 1" column in the row for "Jimmy Butler" ("Jimmy Butler" would also be a value under
+    the column "student name").
+
+
+6. List three data types that can be used in a table.
+
+    1. string
+    2. numeric: integer, float
+    4. date
+
+
+
+7. Given this payments table, provide an English description of the following queries and
+include their results:
+
+     SELECT date, amount
+     FROM payments;
+
+        In the above example, one is requesting that all of the values in the date and amount columns
+        from the payments table be selected.  It would include the following:
+          "date"                      "amount"
+          '2016-05-01'                1500.00
+          '2016-05-10'                  37.00
+          '2016-05-15'                 124.93
+          '2016-05-23'                  54.72
+
+
+     SELECT amount
+     FROM payments
+     WHERE amount > 500;
+
+          In the above example, one is requesting that any value in the amount column that is greater than
+          500 from the payments table be selected.  It would include the following:
+
+            'amount'
+            1500.00
+
+
+     SELECT *
+     FROM payments
+     WHERE payee = 'Mega Foods';
+
+          In the above example, one is requesting that all values in the row for 'Mega Foods' in the
+          payments table be selected.
+          It would include the following:
+
+              "date",       "payee",        "amount", "memo"
+            '2016-05-15', 'Mega Foods',      124.93,  'Groceries'
+
+
+
+8. Given this users table, write SQL queries using the following criteria and include the output:
+
+The email and sign-up date for the user named DeAndre Data.
+
+      SELECT email, signup
+      FROM users
+      WHERE name = 'DeAndre Data';
+
+
+The user ID for the user with email 'aleesia.algorithm@uw.edu'.
+
+      SELECT userid
+      FROM users
+      WHERE email = 'aleesia.algorithm@uw.edu';
+
+All the columns for the user ID equal to 4.
+
+      SELECT *
+      FROM users
+      WHERE userid = 4;
+
+
+
+
+Additional practice:
+
+SQLCourse http://www.sqlcourse.com/intro.html
+HackerRank  https://www.hackerrank.com/domains/sql?filters%5Bsubdomains%5D%5B%5D=select

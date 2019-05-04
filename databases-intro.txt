@@ -116,6 +116,9 @@ The email and sign-up date for the user named DeAndre Data.
       FROM users
       WHERE name = 'DeAndre Data';
 
+      "email",                    "signup"
+      'datad@comcast.net',        '2008-01-20'
+
 
 The user ID for the user with email 'aleesia.algorithm@uw.edu'.
 
@@ -123,11 +126,18 @@ The user ID for the user with email 'aleesia.algorithm@uw.edu'.
       FROM users
       WHERE email = 'aleesia.algorithm@uw.edu';
 
+      "userid"
+      1
+
+
 All the columns for the user ID equal to 4.
 
       SELECT *
       FROM users
       WHERE userid = 4;
+
+      "userid", "name",              "email",                        "signup"
+      4,       'Brandy Boolean',    'bboolean@nasa.gov',            '1999-10-15'
 
 
 

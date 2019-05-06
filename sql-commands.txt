@@ -1,0 +1,456 @@
+Exercises
+Use the commands above to complete the following tasks, and submit the SQL statements.
+Real-world examples must be distinct from those used in the text.
+
+1. List the commands for adding, updating, and deleting data.
+
+adding = INSERT INTO
+    Example: INSERT INTO products (id, name, price)
+  VALUES
+  (11773, 'South Face Jacket', 174.99),
+  (11774, 'Big Mountain 2-Person Tent', 219.99),
+  (11775, 'King Cole Camp Stove', 34.99),
+  (11776, 'Oregon Trail Mountain Bike', 579.99);
+
+  updating = UPDATE
+    Example: UPDATE products SET price=159.99 WHERE id=11773;
+
+  deleting = DELETE
+    Example: DELETE FROM products WHERE id=11776;
+
+
+2. Explain the structure for each type of command.
+
+INSERT INTO
+    Example: INSERT INTO <tablename> (<columnName1>,<columnName2>,<columnName3>)
+    VALUES
+    (<column1Value>, <column2Value>, <column3Value>);
+
+    INSERT INTO specifies the action of adding.
+    It is then followed by the <tablename>
+    (<columnName1>,<columnName2>,<columnName3>) Specify which columns values should be added to.
+    VALUES is followed by what specific values are going to be added.
+
+
+UPDATE
+    Example: UPDATE <tablename> SET <columnDescription>=<updatedValue> WHERE <row>;
+
+    UPDATE begins the command.
+    The <tablename> for the update is listed.
+    The columnDescription is stated with the value that the data will be updated to.
+    WHERE denotes which row the update will be happening.
+
+
+DELETE
+    Example: DELETE FROM <tablename> WHERE <uniqueValue>;
+
+    DELETE begins the command.
+    FROM <tablename> states the table where the action should be performed.
+    WHERE specifics the row using an <uniqueValue>   It is always a good idea to use a column
+    with a unique value in the WHERE clause, or to specify multiple criteria. This is good practice
+    because otherwise you can accidentally delete other rows.
+
+
+
+
+3. What are some of the data types that can be used in tables? Give a real-world example of each type.
+
+- String data types:  text   example: 'Assignment Name' (used in School for grades)
+
+- Number data types: integer or int  example: Students grades: 94, 88, 91
+
+- Date data types: datetime     example: Record the date and time when a student's grade was entered
+
+
+
+4. Decide how to create a new table to hold a list of people invited to a wedding dinner. The table needs
+to have first and last names, whether they sent in their RSVP, the number of guests they are bringing,
+and the number of meals (1 for adults and 1/2 for children).
+
+
+
+
+  - Which data type would you use to store each of the following pieces of information?
+    - First and last name.  - string
+    - Whether they sent in their RSVP.  - String (or bit because boolean is not a data type in SQL)
+    - Number of guests. - integer
+    - Number of meals.  - numeric (float or decimal)
+
+  - Write a command that creates the table to track the wedding dinner.
+        CREATE TABLE wedding (
+            firstName text,
+            lastName text,
+            RSVP text,
+            guestNumber integer,
+            mealNumber numeric(3, 1)
+        );
+
+        Table "public.wedding"
+Column    |     Type     | Collation | Nullable | Default
+--------------+--------------+-----------+----------+---------
+firstname    | text         |           |          |
+lastname     | text         |           |          |
+rsvp         | text         |           |          |
+guestnumber  | integer      |           |          |
+mealnumber   | numeric(3,1) |           |          |
+
+
+
+  - Write a command that adds a column to track whether the guest sent a thank you card.
+
+      ALTER TABLE wedding ADD COLUMN thankYouCard text;
+
+        Table "public.wedding"
+Column    |     Type     | Collation | Nullable | Default
+--------------+--------------+-----------+----------+---------
+firstname    | text         |           |          |
+lastname     | text         |           |          |
+rsvp         | text         |           |          |
+guestnumber  | integer      |           |          |
+mealnumber   | numeric(3,1) |           |          |
+thankyoucard | text         |           |          |
+
+
+  - You have decided to move the data about the meals to another table, so write a command to remove the
+    column storing the number meals from the wedding table.
+
+      ALTER TABLE wedding DROP COLUMN mealnumber;
+
+  Table "public.wedding"
+    Column    |  Type   | Collation | Nullable | Default
+--------------+---------+-----------+----------+---------
+ firstname    | text    |           |          |
+ lastname     | text    |           |          |
+ rsvp         | text    |           |          |
+ guestnumber  | integer |           |          |
+ thankyoucard | text    |           |          |
+
+
+  - The guests will need a place to sit at the reception, so write a command that adds a column for
+    table number.
+
+      ALTER TABLE wedding ADD COLUMN tableNumber integer;
+
+Table "public.wedding"
+   Column    |  Type   | Collation | Nullable | Default
+--------------+---------+-----------+----------+---------
+firstname    | text    |           |          |
+lastname     | text    |           |          |
+rsvp         | text    |           |          |
+guestnumber  | integer |           |          |
+thankyoucard | text    |           |          |
+tablenumber  | integer |           |          |
+
+
+  - The wedding is over and we do not need to keep this information, so write a command that deletes the
+    table numbers from the database.
+
+    ALTER TABLE wedding DROP COLUMN tableNumber;
+
+Table "public.wedding"
+    Column    |  Type   | Collation | Nullable | Default
+--------------+---------+-----------+----------+---------
+ firstname    | text    |           |          |
+ lastname     | text    |           |          |
+ rsvp         | text    |           |          |
+ guestnumber  | integer |           |          |
+ thankyoucard | text    |           |          |
+
+
+
+5. Write a command to create a new table to hold the books in a library with the columns ISBN, title,
+author, genre, publishing date, number of copies, and available copies.
+
+    CREATE TABLE library (
+        ISBN varchar,
+        title text,
+        author text,
+        genre text,
+        publishingDate date,
+        numberOfCopies integer,
+        availableCopies integer
+    );
+
+    Table "public.library"
+         Column      |       Type        | Collation | Nullable | Default
+    -----------------+-------------------+-----------+----------+---------
+     isbn            | character varying |           |          |
+     title           | text              |           |          |
+     author          | text              |           |          |
+     genre           | text              |           |          |
+     publishingdate  | date              |           |          |
+     numberofcopies  | integer           |           |          |
+     availablecopies | integer           |           |          |
+
+
+
+
+  - Find three books and add their information to the table.
+
+    INSERT INTO library (ISBN, title, author, genre, publishingDate, numberOfCopies, availableCopies)
+    VALUES
+    (0743265106, 'The Rhythm of Life', 'Matthew Kelly', 'Non-Fiction', '2004-01-28', 3, 2),
+    (9781328683786, 'Tools of Titans', 'Tim Ferriss', 'Non-Fiction', '2017-03-05', 4, 1),
+    (9780385349055, 'Dad Is Fat', 'Jim Gaffigan', 'Non-Fiction', '2013-07-04', 2, 0);
+
+    postgres=# SELECT * FROM library;
+     isbn      |       title        |    author     |    genre    | publishingdate | numberofcopies | availablecopies
+---------------+--------------------+---------------+-------------+----------------+----------------+-----------------
+ 743265106     | The Rhythm of Life | Matthew Kelly | Non-Fiction | 2004-01-28     |              3 |               2
+ 9781328683786 | Tools of Titans    | Tim Ferriss   | Non-Fiction | 2017-03-05     |              4 |               1
+ 9780385349055 | Dad Is Fat         | Jim Gaffigan  | Non-Fiction | 2013-07-04     |              2 |               0
+(3 rows)
+
+
+  - Someone has just checked out one of the books. Change the number of available copies to 1 fewer.
+
+      UPDATE library SET availablecopies = availablecopies - 1 WHERE ISBN='9781328683786';
+
+      SELECT * FROM library WHERE ISBN='9781328683786';
+
+      isbn      |      title      |   author    |    genre    | publishingdate | numberofcopies | availablecopies
+---------------+-----------------+-------------+-------------+----------------+----------------+-----------------
+9781328683786 | Tools of Titans | Tim Ferriss | Non-Fiction | 2017-03-05     |              4 |               0
+(1 row)
+
+
+
+  - Now one of the books has been added to the banned books list. Remove it from the table.
+
+      DELETE FROM library WHERE ISBN='9780385349055';
+
+SELECT * FROM library;
+     isbn      |       title        |    author     |    genre    | publishingdate | numberofcopies | availablecopies
+---------------+--------------------+---------------+-------------+----------------+----------------+-----------------
+ 743265106     | The Rhythm of Life | Matthew Kelly | Non-Fiction | 2004-01-28     |              3 |               2
+ 9781328683786 | Tools of Titans    | Tim Ferriss   | Non-Fiction | 2017-03-05     |              4 |               0
+(2 rows)
+
+
+6. Write a command to make a new table to hold spacecrafts. Information should include id, name,
+year launched, country of origin, a brief description of the mission, orbiting body, if it is currently
+operating, and its approximate miles from Earth. In addition to the table creation, provide commands that
+perform the following operations:
+
+CREATE TABLE spacecrafts (
+    id varchar,
+    name text,
+    year_launched integer,
+    country text,
+    mission text,
+    orbiting_body text,
+    operating_status text,
+    miles_from_earth bigint
+);
+
+Table "public.spacecrafts"
+    Column      |       Type        | Collation | Nullable | Default
+------------------+-------------------+-----------+----------+---------
+id               | character varying |           |          |
+name             | text              |           |          |
+year_launched    | integer           |           |          |
+country          | text              |           |          |
+mission          | text              |           |          |
+orbiting_body    | text              |           |          |
+operating_status | text              |           |          |
+miles_from_earth | bigint            |           |          |
+
+
+  - Add three non-Earth-orbiting satellites to the table.
+
+  INSERT INTO spacecrafts (id, name, year_launched, country, mission, orbiting_body, operating_status, miles_from_earth)
+  VALUES
+  ('2001-014A', 'Mars Odyssey', 2001, 'USA', 'Map the surface of Mars', 'Mars', 'Active', 285000000),
+  ('1977-084A', 'Voyager 1', 1977, 'USA', 'Investigate Jupiter and Saturn', 'None: Currently in interstellar space', 'Active', 13048795036),
+  ('2006-001A', 'New Horizons', 2006, 'USA', 'Investigate Pluto and Charon', 'Charon', 'Active', 4074330000);
+
+  SELECT * FROM spacecrafts;
+      id     |     name     | year_launched | country |            mission             |             orbiting_body             | operating_status | miles_from_earth
+  -----------+--------------+---------------+---------+--------------------------------+---------------------------------------+------------------+------------------
+   2001-014A | Mars Odyssey |          2001 | USA     | Map the surface of Mars        | Mars                                  | Active           |        285000000
+   1977-084A | Voyager 1    |          1977 | USA     | Investigate Jupiter and Saturn | None: Currently in interstellar space | Active           |      13048795036
+   2006-001A | New Horizons |          2006 | USA     | Investigate Pluto and Charon   | Charon                                | Active           |       4074330000
+  (3 rows)
+
+  - Remove one of the satellites from the table since it has just crashed into the planet.
+
+    DELETE FROM spacecrafts WHERE id='1977-084A';
+
+  SELECT * FROM spacecrafts;
+      id     |     name     | year_launched | country |           mission            | orbiting_body | operating_status | miles_from_earth
+  -----------+--------------+---------------+---------+------------------------------+---------------+------------------+------------------
+   2001-014A | Mars Odyssey |          2001 | USA     | Map the surface of Mars      | Mars          | Active           |        285000000
+   2006-001A | New Horizons |          2006 | USA     | Investigate Pluto and Charon | Charon        | Active           |       4074330000
+  (2 rows)
+
+
+
+  - Edit another satellite because it is no longer operating and change the value to reflect that.
+
+UPDATE spacecrafts SET operating_status='Inactive' WHERE id='2001-014A';
+
+SELECT * FROM spacecrafts WHERE id='2001-014A';
+   id     |     name     | year_launched | country |         mission         | orbiting_body | operating_status | miles_from_earth
+-----------+--------------+---------------+---------+-------------------------+---------------+------------------+------------------
+2001-014A | Mars Odyssey |          2001 | USA     | Map the surface of Mars | Mars          | Inactive         |        285000000
+(1 row)
+
+
+7. Write a command to create a new table to hold the emails in your inbox. This table should include an
+id, the subject line, the sender, any additional recipients, the body of the email, the timestamp,
+whether or not you have read the email, and the id of the email chain it's in. Also provide commands that
+perform the following operations:
+
+CREATE TABLE email_inbox (
+  id varchar,
+  subject text,
+  sender varchar,
+  additional_recipients varchar,
+  body text,
+  time_sent timestamp,
+  status text,
+  email_chain_id varchar
+);
+
+Table "public.email_inbox"
+        Column         |            Type             | Collation | Nullable | Default
+-----------------------+-----------------------------+-----------+----------+---------
+ id                    | character varying           |           |          |
+ subject               | text                        |           |          |
+ sender                | character varying           |           |          |
+ additional_recipients | character varying           |           |          |
+ body                  | text                        |           |          |
+ time_sent             | timestamp without time zone |           |          |
+ status                | text                        |           |          |
+ email_chain_id        | character varying           |           |          |
+
+
+
+  - Add three new emails to the inbox.
+
+INSERT INTO email_inbox (id, subject, sender, additional_recipients, body, time_sent, status, email_chain_id)
+VALUES
+('8c8c2bec46facfd2ba7ae7b93.db3742404a.20190505133239.ebe9563687.69c6ec26@mail103.atl281.mcsv.net',
+'Your May 9th Spring Share- Order today!',
+'jack@jacksfarm.net',
+'yes, unknown',
+'May 9th pick up. Share is 7 total items. Price for 7 item share is $23.  Pick up is Thursday 5/9 10 am-7pm. Simply reply with an affirmative response',
+'2019-05-05 06:32:49',
+'Read',
+'https://mail.google.com/mail/u/0/?tab=wm#inbox/FMfcgxwCgVWtxVLJnLBcPbCcvhZsJmJD'),
+
+
+('5ccdc3449a568_11282b008da1110877656@ea18ae2c-785a-4889-94d0-f9619c70d2a2.mail',
+'[Bloc] [Assignment] Submission approved: Web Developer Track 1 - Databases: Introduction',
+'no-reply@bloc.io via sendgrid.me',
+'none',
+'Bloc Logo
+Go to submission
+CHECKPOINT:
+Web Developer Track 1 - Databases: Introduction
+
+COMMENTS:
+Hello Matthew.
+
+Thanks for the re-submission. Your assignment is now complete and correct.
+
+Marking this as approved, see you at the next checkpoint! ✅
+
+Alfredo Salazar Grading Team Member
+
+Stuck on a problem?',
+'2019-05-04 09:52:23',
+'read',
+'https://mail.google.com/mail/u/0/?tab=wm#search/bloc/FMfcgxwCgVWsjbwqkPBcwrtbwmsmWrJH'),
+
+('-607464941.11061.1550426812803.JavaMail.root@kofcvmlapp01.kofc.qts',
+'Good seeing you today.',
+'no-reply@kofc.org',
+'none',
+'Dear Matthew,
+I updated you in the KofC system, you should be good to go.
+Regards,
+Joe',
+'2019-02-17 10:06:53',
+'read',
+'https://mail.google.com/mail/u/0/?tab=wm#sent/FMfcgxwBVgsZwNJgvRqPFfvQNxfSdRpj');
+
+SELECT * FROM email_inbox;
+                                               id                                                |                                         subject                                          |              sender              | additional_recipients |                                                                         body                                                                          |      time_sent      | status |                                    email_chain_id
+-------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------+----------------------------------+-----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------+--------+---------------------------------------------------------------------------------------
+ 8c8c2bec46facfd2ba7ae7b93.db3742404a.20190505133239.ebe9563687.69c6ec26@mail103.atl281.mcsv.net | Your May 9th Spring Share- Order today!                                                  | jack@jacksfarm.net               | yes, unknown          | May 9th pick up. Share is 7 total items. Price for 7 item share is $23.  Pick up is Thursday 5/9 10 am-7pm. Simply reply with an affirmative response | 2019-05-05 06:32:49 | Read   | https://mail.google.com/mail/u/0/?tab=wm#inbox/FMfcgxwCgVWtxVLJnLBcPbCcvhZsJmJD
+ 5ccdc3449a568_11282b008da1110877656@ea18ae2c-785a-4889-94d0-f9619c70d2a2.mail                   | [Bloc] [Assignment] Submission approved: Web Developer Track 1 - Databases: Introduction | no-reply@bloc.io via sendgrid.me | none                  | Bloc Logo                                                                                                                                            +| 2019-05-04 09:52:23 | read   | https://mail.google.com/mail/u/0/?tab=wm#search/bloc/FMfcgxwCgVWsjbwqkPBcwrtbwmsmWrJH
+                                                                                                 |                                                                                          |                                  |                       | Go to submission                                                                                                                                     +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       | CHECKPOINT:                                                                                                                                          +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       | Web Developer Track 1 - Databases: Introduction                                                                                                      +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       |                                                                                                                                                      +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       | COMMENTS:                                                                                                                                            +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       | Hello Matthew.                                                                                                                                       +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       |                                                                                                                                                      +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       | Thanks for the re-submission. Your assignment is now complete and correct.                                                                           +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       |                                                                                                                                                      +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       | Marking this as approved, see you at the next checkpoint! <U+2705>                                                                                          +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       |                                                                                                                                                      +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       | Alfredo Salazar Grading Team Member                                                                                                                  +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       |                                                                                                                                                      +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       | Stuck on a problem?                                                                                                                                   |                     |        |
+ -607464941.11061.1550426812803.JavaMail.root@kofcvmlapp01.kofc.qts                              | Good seeing you today.                                                                   | no-reply@kofc.org                | none                  | Dear Matthew,                                                                                                                                        +| 2019-02-17 10:06:53 | read   | https://mail.google.com/mail/u/0/?tab=wm#sent/FMfcgxwBVgsZwNJgvRqPFfvQNxfSdRpj
+                                                                                                 |                                                                                          |                                  |                       | I updated you in the KofC system, you should be good to go.                                                                                          +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       | Regards,                                                                                                                                             +|                     |        |
+                                                                                                 |                                                                                          |                                  |                       | Joe                                                                                                                                                   |                     |        |
+(3 rows)
+
+
+
+
+  - You deleted one of the emails, so write a command to remove the row from the inbox table.
+
+DELETE FROM email_inbox WHERE id='5ccdc3449a568_11282b008da1110877656@ea18ae2c-785a-4889-94d0-f9619c70d2a2.mail';
+
+SELECT * FROM email_inbox;
+                                               id                                                |                 subject                 |       sender       | additional_recipients |                                                                         body                                                                          |      time_sent      | status |                                 email_chain_id
+-------------------------------------------------------------------------------------------------+-----------------------------------------+--------------------+-----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------+--------+---------------------------------------------------------------------------------
+ 8c8c2bec46facfd2ba7ae7b93.db3742404a.20190505133239.ebe9563687.69c6ec26@mail103.atl281.mcsv.net | Your May 9th Spring Share- Order today! | jack@jacksfarm.net | yes, unknown          | May 9th pick up. Share is 7 total items. Price for 7 item share is $23.  Pick up is Thursday 5/9 10 am-7pm. Simply reply with an affirmative response | 2019-05-05 06:32:49 | Read   | https://mail.google.com/mail/u/0/?tab=wm#inbox/FMfcgxwCgVWtxVLJnLBcPbCcvhZsJmJD
+ -607464941.11061.1550426812803.JavaMail.root@kofcvmlapp01.kofc.qts                              | Good seeing you today.                  | no-reply@kofc.org  | none                  | Dear Matthew,                                                                                                                                        +| 2019-02-17 10:06:53 | read   | https://mail.google.com/mail/u/0/?tab=wm#sent/FMfcgxwBVgsZwNJgvRqPFfvQNxfSdRpj
+                                                                                                 |                                         |                    |                       | I updated you in the KofC system, you should be good to go.                                                                                          +|                     |        |
+                                                                                                 |                                         |                    |                       | Regards,                                                                                                                                             +|                     |        |
+                                                                                                 |                                         |                    |                       | Joe                                                                                                                                                   |                     |        |
+(2 rows)
+
+
+
+  - You started reading an email but just heard a crash in another room. Mark the email as unread before
+  investigating the crash, so you can come back and read it later.
+
+  UPDATE email_inbox SET status='unread' WHERE id='8c8c2bec46facfd2ba7ae7b93.db3742404a.20190505133239.ebe9563687.69c6ec26@mail103.atl281.mcsv.net';
+
+  SELECT * FROM email_inbox;
+                                                 id                                                |                 subject                 |       sender       | additional_recipients |                                                                         body                                                                          |      time_sent      | status |                                 email_chain_id
+  -------------------------------------------------------------------------------------------------+-----------------------------------------+--------------------+-----------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------+--------+---------------------------------------------------------------------------------
+   -607464941.11061.1550426812803.JavaMail.root@kofcvmlapp01.kofc.qts                              | Good seeing you today.                  | no-reply@kofc.org  | none                  | Dear Matthew,                                                                                                                                        +| 2019-02-17 10:06:53 | read   | https://mail.google.com/mail/u/0/?tab=wm#sent/FMfcgxwBVgsZwNJgvRqPFfvQNxfSdRpj
+                                                                                                   |                                         |                    |                       | I updated you in the KofC system, you should be good to go.                                                                                          +|                     |        |
+                                                                                                   |                                         |                    |                       | Regards,                                                                                                                                             +|                     |        |
+                                                                                                   |                                         |                    |                       | Joe                                                                                                                                                   |                     |        |
+   8c8c2bec46facfd2ba7ae7b93.db3742404a.20190505133239.ebe9563687.69c6ec26@mail103.atl281.mcsv.net | Your May 9th Spring Share- Order today! | jack@jacksfarm.net | yes, unknown          | May 9th pick up. Share is 7 total items. Price for 7 item share is $23.  Pick up is Thursday 5/9 10 am-7pm. Simply reply with an affirmative response | 2019-05-05 06:32:49 | unread | https://mail.google.com/mail/u/0/?tab=wm#inbox/FMfcgxwCgVWtxVLJnLBcPbCcvhZsJmJD
+  (2 rows)
+
+
+
+
+  /*
+  Notes: How to alter column data types.
+  ALTER TABLE library
+  ALTER COLUMN publishingDate TYPE date year;
+
+  ALTER TABLE library
+  ALTER COLUMN ISBN TYPE varchar;
+
+PostgreSQL change column type statement http://www.postgresqltutorial.com/postgresql-change-column-type/
+
+Other Helpful Links:
+SQL Data Types (very helpful!) https://www.w3schools.com/sql/sql_datatypes.asp
+PostgreSQL Naming Rules http://etutorials.org/SQL/Postgresql/Part+I+General+PostgreSQL+Use/Chapter+3.+PostgreSQL+SQL+Syntax+and+Use/PostgreSQL+Naming+Rules/
+psql  http://postgresguide.com/utilities/psql.html
+Working with Dates and Times http://postgresguide.com/tips/dates.html
+Increment or Decrement https://stackoverflow.com/questions/973380/sql-how-to-increase-or-decrease-one-for-a-int-column-in-one-command
+  */

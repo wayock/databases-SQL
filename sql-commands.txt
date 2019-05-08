@@ -72,7 +72,7 @@ and the number of meals (1 for adults and 1/2 for children).
 
   - Which data type would you use to store each of the following pieces of information?
     - First and last name.  - string
-    - Whether they sent in their RSVP.  - String (or bit because boolean is not a data type in SQL)
+    - Whether they sent in their RSVP.  - Boolean
     - Number of guests. - integer
     - Number of meals.  - numeric (float or decimal)
 

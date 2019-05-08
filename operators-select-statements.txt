@@ -1,0 +1,222 @@
+  Exercises
+    Answer the following questions and submit the responses.
+
+    1. Write out a generic SELECT statement.
+
+        SELECT name_first, name_last
+        FROM table3
+        WHERE number > 21;
+
+
+    2. Create a fun way to remember the order of operations in a SELECT statement, such as a mnemonic.
+
+        *To the tune of 'Frère Jacques'*
+        SELECT some items, SELECT some items
+        FROM the table, FROM the table
+        WHERE the condition is met, WHERE the condition is met,
+        LIKE to filter, LIKE to filter.
+
+        https://www.youtube.com/watch?v=35jXfsO37kE
+
+
+    3. Given this dogs table, write queries to select the following pieces of data:
+
+    Intake teams typically guess the breed of shelter dogs, so the breed column may have multiple words (for example, "Labrador Collie mix").
+
+    Display the name, gender, and age of all dogs that are part Labrador.
+
+        SELECT name, gender, age
+        FROM dogs
+        WHERE breed LIKE '%labrador%';
+
+          name  | gender | age
+        --------+--------+-----
+         Boujee | F      |   3
+         Marley | M      |   0
+        (2 rows)
+
+    Display the ids of all dogs that are under 1 year old.
+
+        SELECT id
+        FROM dogs
+        WHERE age < 1;
+
+        id
+        -------
+        10002
+        10004
+        (2 rows)
+
+    Display the name and age of all dogs that are female and over 35lbs.
+
+      SELECT name, age
+      FROM dogs
+      WHERE gender = 'F'
+      AND weight > 35;
+
+       name  | age
+      --------+-----
+      Boujee |   3
+      (1 row)
+
+    Display all of the information about all dogs that are not Shepherd mixes.
+
+      SELECT *
+      FROM dogs
+      WHERE breed NOT LIKE '%shepherd%';
+
+      id   |   name    | gender | age | weight |       breed        | intake_date | in_foster
+-------+-----------+--------+-----+--------+--------------------+-------------+------------
+10001 | Boujee    | F      |   3 |     36 | labrador poodle    | 2017-06-22  |
+10002 | Munchkin  | F      |   0 |      8 | dachsund chihuahua | 2017-01-13  | 2017-01-31
+10004 | Marley    | M      |   0 |     10 | labrador           | 2017-05-04  | 2016-06-20
+10006 | Marmaduke | M      |   7 |    150 | great dane         | 2016-03-22  | 2016-05-15
+10007 | Rosco     | M      |   5 |    180 | rottweiler         | 2017-04-01  |
+(5 rows)
+
+
+    Display the id, age, weight, and breed of all dogs that are either over 60lbs or Great Danes.
+
+    SELECT id, age, weight, breed
+    FROM dogs
+    WHERE weight > 60
+    OR breed = 'great dane';
+
+   id   | age | weight |   breed
+  -------+-----+--------+------------
+  10006 |   7 |    150 | great dane
+  10007 |   5 |    180 | rottweiler
+  (2 rows)
+
+
+
+4. Given this cats table, what records are returned from these queries?
+
+    SELECT name, adoption_date FROM cats;
+
+    Name and adoption dates of all the cats in the database.
+
+      name   | adoption_date
+    ----------+---------------
+    Mushi    | 2016-03-22
+    Seashell |
+    Azul     | 2016-04-17
+    Victoire | 2016-09-01
+    Nala     |
+    (5 rows)
+
+
+
+    SELECT name, age FROM cats;
+
+    Name and age of all the cats in the database.
+
+      name   | age
+    ----------+-----
+    Mushi    |   1
+    Seashell |   7
+    Azul     |   3
+    Victoire |   7
+    Nala     |   1
+    (5 rows)
+
+
+5.  From the cats table, write queries to select the following pieces of data.
+
+    Display all the information about all of the available cats.
+
+        SELECT *
+        FROM cats
+        WHERE adoption_date IS NULL;
+
+        id |   name   | gender | age | intake_date | adoption_date
+        ----+----------+--------+-----+-------------+---------------
+         2 | Seashell | F      |   7 | 2016-01-09  |
+         5 | Nala     | F      |   1 | 2016-01-12  |
+        (2 rows)
+
+
+    Display the name and sex of all cats who are 7 years old.
+
+        SELECT name, gender
+        FROM cats
+        WHERE age = 7;
+
+          name   | gender
+        ----------+--------
+        Seashell | F
+        Victoire | M
+        (2 rows)
+
+
+    Find all of the names of the cats, so you don’t choose duplicate names for new cats.
+
+        SELECT name
+        FROM cats;
+
+        name
+        ----------
+        Mushi
+        Seashell
+        Azul
+        Victoire
+        Nala
+        (5 rows)
+
+
+6. List each comparison operator and explain when you would use it. Include a real world example for each.
+    If you can’t list these from memory, do these flashcards until you can!
+
+    > greater than.  When comparing two values.  SELECT item_name FROM inventory WHERE number_of_items > 1; (see inventory)
+    < less than.  When comparing two values.  SELECT item_name, order_number FROM inventory WHERE number_of_items < 1; (get reorder information for out of stock items)
+    = equal to.  When comparing two values.  SELECT name, final_grade FROM students WHERE grade = 11; (Select all the names and final grades for all 11th grade students)
+    <= less than or equal to.  When comparing two values.  SELECT names FROM wrestlers WHERE weight <= 140; (select all wrestlers eligible to wrestle in the 140lb match)
+    >= greater than or equal to.  When comparing two values.  SELECT names FROM wedding_guests WHERE age >= 21; (select all wedding guests over 21 for open bar costs)
+    != not equal to, when comparing two values.  SELECT names FROM hockey_roster WHERE position != 'goalie'; (select hockey players except for the goalies)
+    <> greater than or less than.  When comparing two values.  SELECT names FROM extended_family WHERE age <> 16; (select extended family members who are not 16)
+    LIKE used to pattern match a string.  SELECT title, author, books_available FROM library WHERE title LIKE '%money%'; (select book title, author and availability from books with "money" in the title)
+    
+
+
+
+7. From the cats table, what data is returned from these queries?
+
+    SELECT name FROM cats WHERE gender = ‘F’;     (When entered exactly like this is gave an error because of ‘)
+    Seashell, Nala
+
+    SELECT name FROM cats WHERE gender = 'F';
+    name
+    ----------
+    Seashell
+    Nala
+    (2 rows)
+
+
+
+    SELECT name FROM cats WHERE age <> 3;
+
+    Mushi, Seashell, Victoire, Nala
+
+    name
+    ----------
+    Mushi
+    Seashell
+    Victoire
+    Nala
+    (4 rows)
+
+    SELECT ID FROM cats WHERE name != 'Mushi' AND gender = 'M';
+
+    3, 4
+
+    id
+    ----
+     3
+     4
+    (2 rows)
+
+/* Notes
+SQL: IS NULL Condition  https://www.techonthenet.com/sql/is_null.php
+
+
+*/

@@ -175,7 +175,13 @@
     != not equal to, when comparing two values.  SELECT names FROM hockey_roster WHERE position != 'goalie'; (select hockey players except for the goalies)
     <> greater than or less than.  When comparing two values.  SELECT names FROM extended_family WHERE age <> 16; (select extended family members who are not 16)
     LIKE used to pattern match a string.  SELECT title, author, books_available FROM library WHERE title LIKE '%money%'; (select book title, author and availability from books with "money" in the title)
-    
+    BETWEEN used to select a range between two values. This is equivalent to "a >= x AND a <= y". SELECT names, dob FROM students WHERE dob BETWEEN "06%" AND "08%"; (select students' name and DOB with summer birthdays)
+    IS DISTINCT FROM used as "expression IS DISTINCT FROM expression", this should be used in place of <> when one of the inputs could be null.  SELECT activities FROM students WHERE activities IS DISTINCT FROM activities (select different types of activities students are involved with.)
+    IS TRUE / IS FALSE Used in the format "expression IS TRUE" when the input could be null. Always returns either true or false.  SELECT team_name FROM nba_teams WHERE animal_mascot IS TRUE; (select nba team names who have an animal as a mascot)
+    IS NULL Determines if the contents of a cell are null. Can be used in conjunction with "NOT" SELECT team_name FROM nba_teams WHERE last_championship_won IS NULL; (select nba teams who have not won an nba championship)
+    AND  Requires both expressions to be true for the row to be returned.  SELECT name FROM students WHERE activities = 'football' AND 'basketball'; (select student names of students who play both football and basketball)
+    OR  Requires one of the expressions to be true for the row to be returned   SELECT name FROM students WHERE transportation = 'car' OR 'bus';  (select students who get to school by car or bus)
+    NOT Requires the expression to be false for the row to be returned  SELECT name FROM students WHERE transportation NOT LIKE '%bus%'; (select students who do not take the bus to school)
 
 
 
@@ -217,6 +223,6 @@
 
 /* Notes
 SQL: IS NULL Condition  https://www.techonthenet.com/sql/is_null.php
-
+Bloc: SQL Comparators   https://quizlet.com/213521413/bloc-sql-comparators-flash-cards/
 
 */

@@ -1,0 +1,621 @@
+
+
+Exercises
+Submit your answers to the following questions.
+
+NOTE: Real-world examples must be your own and not based on the text or previous assignments.
+
+1. How do you find related data held in two separate data tables?
+
+You find related data held in two separate data tables by using a JOIN clause.
+
+
+2. Explain, in your own words, the difference between an INNER JOIN, LEFT OUTER JOIN, and RIGHT OUTER JOIN.
+Give a real-world example for each.
+
+    I'll be using the following data for the INNER JOIN, LEFT OUTER JOIN, RIGHT OUTER JOIN.
+
+    Teacher: Mr. Pain teaches Math and English.  Here are his grades for progress reports for
+    two of his classes and a table of students who play sports.
+
+      CREATE TYPE letter_grade AS ENUM ('A', 'B', 'C', 'D', 'F');
+      CREATE TABLE math (student_id integer, student_name text, grade letter_grade);
+
+       INSERT INTO math (student_id, student_name, grade)
+       VALUES
+       (1,            'Johnny Apple',        'A'),
+       (4,            'Bobby Bo',            'B'),
+       (7,            'Suzy Connors',        'A'),
+      (10,            'Danny Didio',         'C'),
+      (16,            'Emily Efflin',        'B'),
+      (18,            'Fernando Fishhead',   'F'),
+      (45,           'Molly Mono',          NULL ),
+      (77,            'Vincent Vacant',      NULL);
+
+      student_id |   student_name    | grade
+     ------------+-------------------+-------
+               1 | Johnny Apple      | A
+               4 | Bobby Bo          | B
+               7 | Suzy Connors      | A
+              10 | Danny Didio       | C
+              16 | Emily Efflin      | B
+              18 | Fernando Fishhead | F
+              45 | Molly Mono        |
+              77 | Vincent Vacant    |
+(8 rows)
+
+    CREATE TABLE english (student_id integer, student_name text, grade letter_grade);
+
+    INSERT INTO english (student_id, student_name, grade)
+    VALUES
+        (1,            'Johnny Apple',        'A'),
+        (5,           'Billy Button',         'B'),
+        (6,            'Cecilia Centipede',   'C'),
+       (10,            'Danny Didio',         'B'),
+       (17,            'Emilio Everhart',     'A'),
+       (18,            'Fernando Fishhead',   'F'),
+       (40,            'Trudy McTruant',      NULL),
+       (77,            'Vincent Vacant',      NULL);
+
+      student_id |   student_name    | grade
+     ------------+-------------------+-------
+               1 | Johnny Apple      | A
+               5 | Billy Button      | B
+               6 | Cecilia Centipede | C
+              10 | Danny Didio       | B
+              17 | Emilio Everhart   | A
+              18 | Fernando Fishhead | F
+              40 | Trudy McTruant    |
+              77 | Vincent Vacant    |
+      (8 rows)
+
+      CREATE TABLE sports (student_id integer, student_name text, sports text);
+
+      INSERT INTO sports (student_id, student_name, sports)
+      VALUES
+      (1,            'Johnny Apple',        'Baseball'),
+      (4,            'Bobby Bo',            'Baseball'),
+      (5,            'Billy Button',        'Baseball'),
+      (7,            'Suzy Connors',        'Track'),
+      (10,           'Danny Didio',         'Lacrosse'),
+      (18,           'Fernando Fishhead',   'Lacrosse');
+
+      student_id |   student_name    |  sports
+     ------------+-------------------+----------
+               1 | Johnny Apple      | Baseball
+               4 | Bobby Bo          | Baseball
+               5 | Billy Button      | Baseball
+               7 | Suzy Connors      | Track
+              10 | Danny Didio       | Lacrosse
+              18 | Fernando Fishhead | Lacrosse
+     (6 rows)
+
+
+    INNER JOIN
+
+      Method of combining data from multiple tables where there are results from a common row among both
+      of the tables being queried.  It will produce one row per common row among the tables.  Null values
+      are not included.
+
+      Example:
+
+      Mr. Pain teaches Math at 8th period.  Students who play sports often miss his class when they have away
+      games.  Mr. Pain wants to see the grades of students who also play sports.
+
+        SELECT math.student_name, math.grade, sports.sports
+          FROM math
+          JOIN sports
+          ON math.student_id = sports.student_id;
+
+        student_name    | grade |  sports
+      -------------------+-------+----------
+      Johnny Apple      | A     | Baseball
+      Bobby Bo          | B     | Baseball
+      Suzy Connors      | A     | Track
+      Danny Didio       | C     | Lacrosse
+      Fernando Fishhead | F     | Lacrosse
+      (5 rows)
+
+
+    LEFT OUTER JOIN
+
+      The LEFT OUTER JOIN is a way to combine two tables where all of the rows from the first table
+      are listed with each of the matching rows from the second table.  Null values are included.
+
+      Example:
+
+      Mr. Pain wants to see a list of all the students in his 8th period Math class and where or not
+      they play sports.
+
+      SELECT math.student_name, math.grade, sports.sports
+        FROM math
+        LEFT OUTER JOIN sports
+        ON math.student_id = sports.student_id;
+
+      student_name    | grade |  sports
+    -------------------+-------+----------
+    Johnny Apple      | A     | Baseball
+    Bobby Bo          | B     | Baseball
+    Suzy Connors      | A     | Track
+    Danny Didio       | C     | Lacrosse
+    Emily Efflin      | B     |
+    Fernando Fishhead | F     | Lacrosse
+    Molly Mono        |       |
+    Vincent Vacant    |       |
+    (8 rows)
+
+
+
+
+    RIGHT OUTER JOIN
+
+      The RIGHT OUTER JOIN is a way to combine two tables where the results table contains each matching row
+      from both queried tables as well as each row from the second table.
+
+      Example:
+
+      Mr. Pain is reviewing grades for his English class. He wants to see the grades of all of the students
+      in his English class.  He also wants to see the math grades of the students who are in his English class.
+
+      SELECT english.student_name, math.grade, english.grade
+        FROM math
+        RIGHT OUTER JOIN english
+        ON math.student_id = english.student_id;
+
+
+        student_name    | grade | grade
+      -------------------+-------+-------
+      Johnny Apple      | A     | A
+      Billy Button      |       | B
+      Cecilia Centipede |       | C
+      Danny Didio       | C     | B
+      Emilio Everhart   |       | A
+      Fernando Fishhead | F     | F
+      Trudy McTruant    |       |
+      Vincent Vacant    |       |
+      (8 rows)
+
+
+
+3. Define primary key and foreign key. Give a real-world example for each.
+
+  Primary key: a unique identifier for each row in a database table.
+
+    Example:
+    In the example below, student_id would be the primary key.  Each student would have a unique id.
+
+    student_id    student_name    grades    sports
+
+
+  Foreign key: the primary key of one table that is included as a non-unique attribute in another table.
+
+    Example:
+    For the baseball coach, it is easier to use the uniform number as the primary key to identify players.
+    The student_id is still included but it is now the foreign key.
+
+    uniform_number  student_name  student_id  position
+
+
+4. Define aliasing.
+
+    Aliasing is a method used to simplify a query by using an abbreviation for each table name
+    that is used in the query.
+
+
+5. Change this query so that you are using aliasing:
+
+Before aliasing:
+    SELECT professor.name, compensation.salary,
+    compensation.vacation_days FROM professor JOIN
+    compensation ON professor.id =
+    compensation.professor_id;
+
+After aliasing:
+    SELECT p.name, c.salary, c.vacation_days
+    FROM professor AS p
+    JOIN compensation AS c
+    ON p.id = c.professor_id;
+
+    Both Queries return:
+    name           | salary | vacation_days
+--------------------------+--------+---------------
+Albus Dumbledore         |  64000 |             2
+Severus Snape            |  35000 |             8
+Dolores Umbridge         |  56750 |            10
+Bathsheda Babbling       |  42950 |             8
+Rubeus Hagrid            |  30000 |             4
+Wilhelmina Grubbly-Plank | 102750 |            22
+(6 rows)
+
+
+6. Why would you use a NATURAL JOIN? Give a real-world example.
+
+NATURAL JOIN is a shorthand form of USING. It forms a USING list consisting of only the column names that
+appear in both input tables. These columns appear only once in the output table.
+
+Example:
+
+It's time to print a students' report card and you need to combine columns and their data from the
+following tables.
+
+Table: student_info
+student_id, name, address, phone_number, parent_names
+
+Table: english
+student_id, name, english_grade
+
+Table: math
+student_id, name, math_grade
+
+
+
+A NATURAL JOIN would allow you to combine the unique columns of the above information for printing a
+student's report card.  There is no need to have the student's name and id on the report card multiple
+times.  You end up with all the unique column names and data needed.
+
+
+
+7. Using this Employee schema and data, write queries to find the following information:
+    - List all employees and all shifts.
+
+    SELECT employees.name, shifts.date, shifts.start_time, shifts.end_time
+      FROM shifts
+      FULL JOIN scheduled_shifts ON shifts.id = scheduled_shifts.shift_id
+      FULL JOIN employees ON employees.id = scheduled_shifts.employee_id;
+
+         name        |    date    | start_time | end_time
+ --------------------+------------+------------+----------
+  Hermione Granger   | 1998-03-09 | 08:00:00   | 16:00:00
+  Hermione Granger   | 1998-03-10 | 08:00:00   | 16:00:00
+  Hermione Granger   | 1998-03-11 | 08:00:00   | 16:00:00
+  Hermione Granger   | 1998-03-12 | 08:00:00   | 16:00:00
+  Hermione Granger   | 1998-03-13 | 08:00:00   | 16:00:00
+  Ronald Weasley     | 1998-03-10 | 12:00:00   | 16:00:00
+  Ronald Weasley     | 1998-03-12 | 12:00:00   | 16:00:00
+  Luna Lovegood      | 1998-03-09 | 12:00:00   | 16:00:00
+  Luna Lovegood      | 1998-03-11 | 12:00:00   | 16:00:00
+  Luna Lovegood      | 1998-03-13 | 12:00:00   | 16:00:00
+  Draco Malfoy       | 1998-03-11 | 16:00:00   | 20:00:00
+  Draco Malfoy       | 1998-03-12 | 16:00:00   | 20:00:00
+  Draco Malfoy       | 1998-03-13 | 16:00:00   | 20:00:00
+  Padma Patil        | 1998-03-09 | 12:00:00   | 20:00:00
+  Padma Patil        | 1998-03-10 | 12:00:00   | 20:00:00
+  Padma Patil        | 1998-03-11 | 12:00:00   | 20:00:00
+  Padma Patil        | 1998-03-09 | 08:00:00   | 12:00:00
+  Padma Patil        | 1998-03-10 | 08:00:00   | 12:00:00
+  Padma Patil        | 1998-03-11 | 08:00:00   | 12:00:00
+  Cho Chang          | 1998-03-12 | 12:00:00   | 20:00:00
+  Cho Chang          | 1998-03-13 | 12:00:00   | 20:00:00
+  Dean Thomas        | 1998-03-09 | 16:00:00   | 20:00:00
+  Dean Thomas        | 1998-03-10 | 16:00:00   | 20:00:00
+                     | 1998-03-13 | 08:00:00   | 12:00:00
+                     | 1998-03-12 | 08:00:00   | 12:00:00
+  Neville Longbottom |            |            |
+  Cedric Diggory     |            |            |
+  S(27 rows)
+
+
+If you want it ordered by date and start_time:
+
+    SELECT employees.name, shifts.date, shifts.start_time, shifts.end_time
+          FROM shifts
+          FULL JOIN scheduled_shifts ON shifts.id = scheduled_shifts.shift_id
+          FULL JOIN employees ON employees.id = scheduled_shifts.employee_id
+          ORDER BY shifts.date, shifts.start_time;
+
+| name               | date       | start_time | end_time |
+| ------------------ | ---------- | ---------- | -------- |
+| Hermione Granger   | 1998-03-09 | 08:00:00   | 16:00:00 |
+| Padma Patil        | 1998-03-09 | 08:00:00   | 12:00:00 |
+| Padma Patil        | 1998-03-09 | 12:00:00   | 20:00:00 |
+| Luna Lovegood      | 1998-03-09 | 12:00:00   | 16:00:00 |
+| Dean Thomas        | 1998-03-09 | 16:00:00   | 20:00:00 |
+| Padma Patil        | 1998-03-10 | 08:00:00   | 12:00:00 |
+| Hermione Granger   | 1998-03-10 | 08:00:00   | 16:00:00 |
+| Ronald Weasley     | 1998-03-10 | 12:00:00   | 16:00:00 |
+| Padma Patil        | 1998-03-10 | 12:00:00   | 20:00:00 |
+| Dean Thomas        | 1998-03-10 | 16:00:00   | 20:00:00 |
+| Padma Patil        | 1998-03-11 | 08:00:00   | 12:00:00 |
+| Hermione Granger   | 1998-03-11 | 08:00:00   | 16:00:00 |
+| Padma Patil        | 1998-03-11 | 12:00:00   | 20:00:00 |
+| Luna Lovegood      | 1998-03-11 | 12:00:00   | 16:00:00 |
+| Draco Malfoy       | 1998-03-11 | 16:00:00   | 20:00:00 |
+| Hermione Granger   | 1998-03-12 | 08:00:00   | 16:00:00 |
+|                    | 1998-03-12 | 08:00:00   | 12:00:00 |
+| Cho Chang          | 1998-03-12 | 12:00:00   | 20:00:00 |
+| Ronald Weasley     | 1998-03-12 | 12:00:00   | 16:00:00 |
+| Draco Malfoy       | 1998-03-12 | 16:00:00   | 20:00:00 |
+|                    | 1998-03-13 | 08:00:00   | 12:00:00 |
+| Hermione Granger   | 1998-03-13 | 08:00:00   | 16:00:00 |
+| Luna Lovegood      | 1998-03-13 | 12:00:00   | 16:00:00 |
+| Cho Chang          | 1998-03-13 | 12:00:00   | 20:00:00 |
+| Draco Malfoy       | 1998-03-13 | 16:00:00   | 20:00:00 |
+| Neville Longbottom |            |            |          |
+| Cedric Diggory     |            |            |          |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/sG1TKgR15GhH8cjbAwzjAm/0)
+
+8. Using this Adoption schema and data, please write queries to retrieve the following information and
+include the results:
+
+  - Create a list of all volunteers. If the volunteer is fostering a dog, include each dog as well.
+
+        **Query #1**
+
+            SELECT volunteers.first_name, volunteers.last_name, dogs.name
+            FROM volunteers
+            LEFT JOIN dogs
+            ON volunteers.foster_dog_id = dogs.id;
+
+        | first_name | last_name  | name      |
+        | ---------- | ---------- | --------- |
+        | Rubeus     | Hagrid     | Munchkin  |
+        | Marjorie   | Dursley    | Marmaduke |
+        | Sirius     | Black      |           |
+        | Remus      | Lupin      |           |
+        | Albus      | Dumbledore |           |
+
+        ---
+
+        [View on DB Fiddle](https://www.db-fiddle.com/f/tpodLv3A43VL4gHqohqx2o/0)
+
+  - The cat's name, adopter's name, and adopted date for each cat adopted within the past month to be
+    displayed as part of the "Happy Tail" social media promotion which posts recent successful adoptions.
+
+
+  SELECT cats.name, adopters.first_name, adopters.last_name, cat_adoptions.date
+          FROM cats
+          JOIN cat_adoptions ON cats.id = cat_adoptions.cat_id
+          JOIN adopters ON adopters.id = cat_adoptions.adopter_id
+          WHERE cat_adoptions.date >= CURRENT_DATE - INTERVAL '1 Month';
+
+| name     | first_name | last_name | date                     |
+| -------- | ---------- | --------- | ------------------------ |
+| Mushi    | Arabella   | Figg      | 2019-04-24T00:00:00.000Z |
+| Victoire | Argus      | Filch     | 2019-04-29T00:00:00.000Z |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/tpodLv3A43VL4gHqohqx2o/0)
+
+  - Create a list of adopters who have not yet chosen a dog to adopt.
+
+
+      SELECT adopters.id, adopters.first_name, adopters.last_name, adopters.address, adopters.phone_number
+        FROM adopters
+        JOIN dog_adoptions ON dog_adoptions.adopter_id != adopters.id;
+
+      | id  | first_name | last_name | address             | phone_number |
+      | --- | ---------- | --------- | ------------------- | ------------ |
+      | 1   | Hermione   | Granger   | 32 Granger's Street | 676-464-7837 |
+      | 2   | Arabella   | Figg      | 4 Wisteria Walk     | 843-228-5239 |
+
+
+      * If you just want the first and last names you would query like this:
+        SELECT adopters.first_name, adopters.last_name
+                  FROM adopters
+                  JOIN dog_adoptions ON dog_adoptions.adopter_id != adopters.id;
+
+          | first_name | last_name |
+          | ---------- | --------- |
+          | Hermione   | Granger   |
+          | Arabella   | Figg      |
+
+
+
+  - Lists of all cats and all dogs who have not been adopted.
+
+
+      SELECT cats.name
+            FROM cats
+            LEFT OUTER JOIN cat_adoptions ON cats.id = cat_adoptions.cat_id
+            WHERE cat_adoptions.adopter_id IS NULL
+        UNION
+        SELECT dogs.name
+            FROM dogs
+            LEFT OUTER JOIN dog_adoptions ON dogs.id = dog_adoptions.dog_id
+            WHERE dog_adoptions.adopter_id IS NULL;
+
+          | name      |
+          | --------- |
+          | Lassie    |
+          | Boujee    |
+          | Marmaduke |
+          | Seashell  |
+          | Munchkin  |
+          | Nala      |
+          | Marley    |
+
+
+  - The name of the person who adopted Rosco.
+
+  SELECT adopters.first_name, adopters.last_name
+          FROM adopters
+          JOIN dog_adoptions ON dog_adoptions.adopter_id = adopters.id
+          JOIN dogs ON dogs.id = dog_adoptions.dog_id
+          WHERE dogs.name = 'Rosco';
+
+| first_name | last_name |
+| ---------- | --------- |
+| Argus      | Filch     |
+
+---
+
+Also do
+
+        SELECT dogs.id
+          FROM dogs
+          WHERE dogs.name = 'Rosco';
+
+          id
+          10007
+
+        SELECT adopters.first_name, adopters.last_name
+        FROM adopters
+        JOIN dog_adoptions ON dog_adoptions.adopter_id = adopters.id
+        WHERE dog_adoptions.dog_id = 10007;
+
+        | first_name | last_name |
+        | ---------- | --------- |
+        | Argus      | Filch     |
+
+
+
+
+9. Using this Library schema and data, write queries applying the following scenarios and include the results:
+
+  - To determine if the library should buy more copies of a given book, please provide the names and position,
+    in order, of all of the patrons with a hold (request for a book with all copies checked out) on
+    "Advanced Potion-Making".
+
+
+        SELECT p.name, h.rank
+         FROM patrons AS p
+         JOIN holds AS h ON h.patron_id = p.id
+         JOIN books AS b ON b.isbn = h.isbn
+         WHERE b.title = 'Advanced Potion-Making'
+         ORDER BY h.rank;
+
+    | name           | rank |
+    | -------------- | ---- |
+    | Terry Boot     | 1    |
+    | Cedric Diggory | 2    |
+
+    ---
+
+    [View on DB Fiddle](https://www.db-fiddle.com/f/j4EGoWzHWDBVtiYzB9ygC4/0)
+
+
+ - List all of the library patrons. If they have one or more books checked out, list the books with the patrons.
+
+
+     SELECT p.id, p.name, b.title
+           FROM patrons AS p
+           LEFT OUTER JOIN transactions AS t ON t.patron_id = p.id
+           LEFT OUTER JOIN books AS b ON b.isbn = t.isbn
+           ORDER BY p.id;
+
+ | id  | name             | title                                   |
+ | --- | ---------------- | --------------------------------------- |
+ | 1   | Hermione Granger | Fantastic Beasts and Where to Find Them |
+ | 1   | Hermione Granger | Hogwarts: A History                     |
+ | 2   | Terry Boot       | Advanced Potion-Making                  |
+ | 2   | Terry Boot       | Fantastic Beasts and Where to Find Them |
+ | 3   | Padma Patil      | Fantastic Beasts and Where to Find Them |
+ | 4   | Cho Chang        | Advanced Potion-Making                  |
+ | 5   | Cedric Diggory   | Fantastic Beasts and Where to Find Them |
+
+ ---
+
+ [View on DB Fiddle](https://www.db-fiddle.com/f/j4EGoWzHWDBVtiYzB9ygC4/0)
+
+
+
+/* Notes
+Enumerated Data types: https://www.postgresql.org/docs/9.1/datatype-enum.html
+
+Postgres time and date https://www.postgresql.org/docs/current/datatype-datetime.html#DATATYPE-INTERVAL-ISO8601-UNITS
+
+PostgreSQL INNER JOIN to join 3 tables example
+http://www.postgresqltutorial.com/postgresql-inner-join/
+
+PostgreSQL Joins
+http://www.postgresqltutorial.com/postgresql-joins/
+
+
+How to Join 3 tables in 1 SQL query - YouTube
+https://www.youtube.com/watch?v=G1OLrfjHDyw
+
+SQL JOINing Multiple Tables - YouTube
+https://www.youtube.com/watch?v=I6f42xiPwzs
+
+
+To chance the order of data by column use ORDER BY
+      Example:
+        SELECT volunteers.first_name, volunteers.last_name, dogs.name
+                  FROM volunteers
+                  LEFT JOIN dogs
+                  ON volunteers.foster_dog_id = dogs.id
+                  ORDER BY volunteers.last_name;
+
+       SELECT employees.name, shifts.date, shifts.start_time, shifts.end_time
+        FROM shifts
+        FULL JOIN scheduled_shifts ON shifts.id = scheduled_shifts.shift_id
+        FULL JOIN employees ON employees.id = scheduled_shifts.employee_id
+        ORDER BY shifts.date, shifts.start_time;
+
+
+Used the following commands and queries going through the checkpoint:
+INNER JOIN
+    SELECT professor.name, department.department_name
+    FROM professor
+    JOIN department
+    ON professor.department_id = department.department_id;
+aliasing
+    SELECT p.name, d.department_name
+    FROM professor AS p
+    JOIN department AS d
+    ON p.department_id = d.department_id;
+
+CREATE TABLE compensation (id integer, professor_id integer, salary integer, vacation_days integer);
+COPY compensation FROM '/Users/wayock/Downloads/hogwarts/hogwarts-compensation.csv' DELIMITER ',' CSV;
+
+SELECT professor.name, department.department_name, compensation.salary
+  FROM professor
+  JOIN department ON professor.department_id = department.department_id
+  JOIN compensation ON professor.id = compensation.professor_id;
+
+  SELECT department.department_name, professor.name
+  FROM department
+  LEFT OUTER JOIN professor
+  ON professor.department_id = department.department_id;
+
+  SELECT department.department_name, professor.name
+  FROM department
+  JOIN professor
+  ON professor.department_id = department.department_id;
+
+  SELECT professor.name, department.department_name
+  FROM department
+  RIGHT OUTER JOIN professor
+  ON professor.department_id = department.department_id;
+
+  Question 9.b - Asked question on Slack
+
+  SELECT p.id, p.name, b.title
+    FROM patrons AS p
+    LEFT OUTER JOIN transactions AS t ON t.patron_id = p.id
+    LEFT OUTER JOIN books AS b ON b.isbn = t.isbn
+    WHERE t.checked_in_date IS NULL;
+
+| id  | name           | title                                   |
+| --- | -------------- | --------------------------------------- |
+| 2   | Terry Boot     | Advanced Potion-Making                  |
+| 5   | Cedric Diggory | Fantastic Beasts and Where to Find Them |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/j4EGoWzHWDBVtiYzB9ygC4/0)
+
+
+
+SELECT p.id, p.name, b.title
+ FROM patrons AS p
+ LEFT OUTER JOIN transactions AS t ON t.patron_id = p.id
+ LEFT OUTER JOIN books AS b ON b.isbn = t.isbn
+ ORDER BY p.id;
+
+| id  | name             | title                                   |
+| --- | ---------------- | --------------------------------------- |
+| 1   | Hermione Granger |                                         |
+| 4   | Cho Chang        |                                         |
+| 2   | Terry Boot       |                                         |
+| 3   | Padma Patil      |                                         |
+| 2   | Terry Boot       |  Advanced Potion-Making                 |
+| 1   | Hermione Granger |                                         |
+| 5   | Cedric Diggory   | Fantastic Beasts and Where to Find Them |
+
+---
+*/

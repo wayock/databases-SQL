@@ -490,7 +490,30 @@ Also do
 
  - List all of the library patrons. If they have one or more books checked out, list the books with the patrons.
 
+All Patron names and only books that are currently checked out.
 
+
+    SELECT patrons.name, books.title
+    FROM transactions
+    JOIN books ON (books.isbn = transactions.isbn
+    AND transactions.checked_out_date IS NOT NULL AND transactions.checked_in_date IS NULL)
+    RIGHT OUTER JOIN patrons ON transactions.patron_id = patrons.id
+    ORDER BY patrons.id;
+
+| name             | title                                   |
+| ---------------- | --------------------------------------- |
+| Hermione Granger |                                         |
+| Terry Boot       | Advanced Potion-Making                  |
+| Padma Patil      |                                         |
+| Cho Chang        |                                         |
+| Cedric Diggory   | Fantastic Beasts and Where to Find Them |
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/j4EGoWzHWDBVtiYzB9ygC4/0)
+
+
+All Patron names and all books they ever checked out:
      SELECT p.id, p.name, b.title
            FROM patrons AS p
            LEFT OUTER JOIN transactions AS t ON t.patron_id = p.id
